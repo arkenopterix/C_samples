@@ -84,6 +84,9 @@ int main(int argc, char *argv[])
         fclose(fichierScore);
     }
 
+    rename("text.txt","text2.txt");
+
+    remove("text2.txt");
 
     return 0;
 
