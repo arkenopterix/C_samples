@@ -6,3 +6,6 @@ obj/utils.o: src/utils.c
 
 obj/main.o: src/main.c inc/utils.h
 	gcc -o obj/main.o -c src/main.c -I inc/  -Wall
+
+clean:
+	rm -rf obj/utils.o obj/main.o JeuPendu
