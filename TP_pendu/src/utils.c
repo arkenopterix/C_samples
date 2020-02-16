@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "utils.h"
+
 
 
 
@@ -14,10 +16,11 @@ void initMotCache(char *c,int taille)
 {
     // on rempli le tableau d'asterisques
     int i;
-    for ( i=0 ; i < taille-1 ; i++)
+    for ( i=0 ; i <= taille-1 ; i++)
     {
         c[i]='*';
     }
+    c[taille] = '\0';
 
 }
 
@@ -52,19 +55,25 @@ char lireCaractere()
 }
 
 /*
-*   Fonction qui indique si le caractere choisi par l'utilisateur est dans le mot
+*   Fonction récursive qui indique si le caractere choisi par l'utilisateur est dans le mot
 *   et retourne le nombre de fois qu'il apparait
 */
 int chercherCaratereLu(char cLu, char* motADeviner, char* motCache, int *nbOccurence)
 {
     char *suiteMotADeviner = NULL;
     int occurenceMotTrouve = 0;
-    //printf("chercherCarlu: motADevinier: %s , motchache : %s , nbocc : %d \n",motADeviner,motCache,*nbOccurence);
+#ifdef DEBUG
+    printf("chercherCarlu: motADevinier: %s , motchache : %s , nbocc : %d \n",motADeviner,motCache,*nbOccurence);
+#endif
+    // on cherche l'occurence du caracère
     suiteMotADeviner = strchr(motADeviner,(int) cLu);
     if(suiteMotADeviner !=NULL)
     {
         //on calcule l'indexe du caractere trouve
-        //printf("int moaDeviner: %d , int suitrMotAdeviner: %d, index : %d \n",(int)motADeviner,((int) suiteMotADeviner),((int)motADeviner - ((int) suiteMotADeviner)));
+
+#ifdef DEBUG
+        printf("int moaDeviner: %d , int suitrMotAdeviner: %d, index : %d \n",(int)motADeviner,((int) suiteMotADeviner),((int)motADeviner - ((int) suiteMotADeviner)));
+#endif
         occurenceMotTrouve = ((int) suiteMotADeviner) - ((int)motADeviner);
 
         //on incremente le compteur d'occurences
@@ -85,47 +94,13 @@ int chercherCaratereLu(char cLu, char* motADeviner, char* motCache, int *nbOccur
 
 }
 
-/*
-*   Fonction qui indique si le caractere choisi par l'utilisateur est dans le mot
-*   et retourne le nombre de fois qu'il apparait
-
-int chercherCaratereLu(char cLu, char* motADeviner, char* motCache, int tailleMot)
+int choisiChiffreAuPif(int nbMots)
 {
-    int nbOccurence = 0;
-    int rechercheFinie = 0;
-    char *copieMotADeviner = NULL;
-    char *suiteMotADeviner = NULL;
 
-    copieMotADeviner = malloc(tailleMot*sizeof(char));
-
-    if(copieMotADeviner == NULL) // il y a eu un soucis dans le malloc
-    {
-        return -1;
-    }
-
-    //on copie le contenu du mot dans copieMotADeviner
-    strncpy(copieMotADeviner,motADeviner,tailleMot);
-
-    while(!rechercheFinie)
-    {
-        suiteMotADeviner = strchr(copieMotADeviner,(int) cLu); // on cherche le caractere dans la mot
-        if(suiteMotADeviner != NULL) //une occurence a ete trouvee
-        {
+    srand(time(NULL));
 
 
-            //on prepare la poursuite de la recherche
-        }
-        else // pas d'occurence trouvee
-        {
-            rechercheFinie = 1;
-        }
-    }
-
-
-
-
-    return nbOccurence;
-
+    return (rand() % nbMots);
 }
-*/
+
 

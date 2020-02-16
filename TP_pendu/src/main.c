@@ -2,39 +2,102 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utils.h"
-
+#include "dico.h"
 
 #define MOT "BLOUBLI"
 #define TAILLE_MOT 8
+//#define DEBUG
 
 
 int main(int argc, char *argv[])
 {
-    //Initialisation des variables
-    char motADeviner[TAILLE_MOT] = MOT;
+    /*
+    *   Initialisation des variables
+    */
+
+    //variables du jeu
+    //char motADeviner[TAILLE_MAX_MOT];
     int nbCoups = 10;
     int occurenceCarTrouve = 0;
     char *motCache = NULL;
     char caractereLu = 0;
-    int compteurSucces = TAILLE_MOT - 1;
+    int compteurSucces;
 
-    //Initialisation du tableau motADeviner:
-    motCache = malloc(TAILLE_MOT*sizeof(char));
+    //variables liées au dico
+    FILE *fichierMots = NULL;
+    int nbMots;
+    Dictionnaire *dicoTab = NULL;
+    int indexMotPartie;
 
-    if (motADeviner!=NULL)
+    /*
+    *Recuperation de la liste des mots
+    */
+
+    //ouverture du fichier
+    fichierMots = fopen("data/mots.txt", "r");
+
+    if(fichierMots == NULL)// on teste si l'ouverture c'est bien passée
     {
-        initMotCache(motCache,TAILLE_MOT);
+        printf("ERREUR: Fichier data/mots.txt introuvable\n");
+        exit(1);
+    }
+
+    //on compte le nombre de mots dans le fichier
+    nbMots = compteMotsDansFichier(fichierMots);
+#ifdef DEBUG
+    printf("nombre de mots dans mots.txt: %d \n",nbMots);
+#endif // DEBUG
+
+    //On alloue la mémoire pour le tableau de Dictionnaire
+    dicoTab = malloc(nbMots*sizeof(Dictionnaire));
+
+    if(dicoTab == NULL)
+    {
+        printf("ERREUR: allocation memoire a echoue");
+        exit(1);
+    }
+
+    //on remet le curseur du fichier à 0
+    rewind(fichierMots);
+
+    //On rempli le tableau de dictionnaire:
+    chargementDictionnaire(fichierMots,dicoTab,nbMots);
+
+    //cloture du fichier de mots
+    fclose(fichierMots);
+
+    /*
+    *   Preparation des objets de la partie
+    */
+
+    //On selectionne le mot pour la partie:
+    indexMotPartie = choisiChiffreAuPif(nbMots);
+
+#ifdef DEBUG
+    printf(" Mot selectionne: %s, taille : %d \n",dicoTab[indexMotPartie].mot,dicoTab[indexMotPartie].tailleMot);
+#endif // DEBUG
+
+    //Initialisation du tableau motCache:
+    motCache = malloc(dicoTab[indexMotPartie].tailleMot*sizeof(char));
+
+    if (motCache!=NULL)
+    {
+        initMotCache(motCache,dicoTab[indexMotPartie].tailleMot-1);
     }
     else
     {
-        printf("Malloc failed... you have a problem..\n");
+        printf("ERREUR: Malloc failed... you have a problem..\n");
         return -1;
     }
 
+    //Init compteursucces:
+    compteurSucces = dicoTab[indexMotPartie].tailleMot-1;
     //Menu du pauvre..
     printf("Bienvenue dans le Pendu !\n\n");
 
-    //boucle principale du jeu
+    /*
+    *   boucle principale du jeu
+    */
     while (nbCoups >0 && compteurSucces >0)
     {
         // on réinitialise la variable occurencetrouve
@@ -47,7 +110,7 @@ int main(int argc, char *argv[])
         caractereLu = lireCaractere();
 
         //on verifie s'il y a au moins une occurence du caractere trouve
-        chercherCaratereLu(caractereLu,motADeviner,motCache,&occurenceCarTrouve);
+        chercherCaratereLu(caractereLu,dicoTab[indexMotPartie].mot,motCache,&occurenceCarTrouve);
 
         if(occurenceCarTrouve == 0) //la lettre donnee est dans le mot
         {
