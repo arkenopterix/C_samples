@@ -11,13 +11,14 @@ int main(int argc, char *argv[])
     SDL_Rect iconPos, fondPos, shipPos;
     SDL_Event event;
     int continuer = 1;// variable pour la boucle infinie
+    int followMouse = 0;
 
 
 
 	SDL_Init(SDL_INIT_VIDEO); // demarrage de la SDL
 
     SDL_WM_SetIcon(SDL_LoadBMP("res/icon.bmp"),NULL);
-	ecran = SDL_SetVideoMode(718,638,32, SDL_HWSURFACE | SDL_DOUBLEBUF); // taille de la fenetre + enable double bufferring
+	ecran = SDL_SetVideoMode(718,638,32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE); // taille de la fenetre + enable double bufferring
     SDL_WM_SetCaption("Star Skipper", NULL);// changement du nom de la fenetre
 
     // Enable key repeat
@@ -82,9 +83,59 @@ int main(int argc, char *argv[])
                     case SDLK_LEFT:
                         shipPos.x -= 2;
                         break;
+                    case SDLK_a:
+                        SDL_WarpMouse(ecran->w/2, ecran->h /2);
+                        break;
 
                 }
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                iconPos.x = event.button.x- icon->w/2;
+                iconPos.y = event.button.y- icon->h/2;
+                if(followMouse == 0)
+                {
+                    followMouse = 1;
+                    SDL_ShowCursor(SDL_DISABLE); // on cache le curseur de la souris
+                } else {
+                    followMouse = 0;
+                    SDL_ShowCursor(SDL_ENABLE); // on montre le curseur de la souris
+                }
+                break;
+            case SDL_MOUSEMOTION:
+                if(followMouse == 1)
+                {
+                    iconPos.x = event.motion.x - icon->w/2;
+                    iconPos.y = event.motion.y - icon->h/2;
+                }
+                break;
+            case SDL_VIDEORESIZE:
+                iconPos.x = event.resize.w/2  - icon->w/2;
+                iconPos.y = event.resize.h/2 - icon->h/2;
+                break;
+
+        }
+        if ((event.active.state & SDL_APPMOUSEFOCUS) == SDL_APPMOUSEFOCUS) // un seul & car il s'agit d'un & logique pour dégager le flag
+        {
+            if(event.active.gain == 0) // la sourie est sortie dans la fenetre
+            {
+                fprintf(stdout,"mouse out");
+            }
+            else if (event.active.gain == 1) // la sourie est entrée dans la fenetre
+            {
+                fprintf(stdout,"mouse in");
+            }
+
+        }
+        else if ((event.active.state & SDL_APPACTIVE) == SDL_APPACTIVE)
+        {
+            if(event.active.gain == 0) // lfenetre a été reduite
+            {
+                fprintf(stdout,"la fenetre a été reduite");
+            }
+            else if (event.active.gain == 1) // la fenetre a été restaurée
+            {
+                fprintf(stdout,"la fenetre a été restaurée");
+            }
         }
 
         // on efface l'écran
