@@ -16,7 +16,7 @@ int coord2pos(int x, int y)
 	
 	if ((0<x<TAILLE_CARTE) && (0<y<TAILLE_CARTE))
 	{
-		pos = x+y+(y*(TAILLE_CARTE-1));
+		pos = x+(y*TAILLE_CARTE);
 	}
 	
 	return pos;
@@ -24,5 +24,29 @@ int coord2pos(int x, int y)
 }
 
 
+/*
+*   Fonction pour récupérer la coordonnées x dans la carte a partir de la position dans le tableau de la carte
+*/
+int pos2x(int pos)
+{
+	int x = -1;
 
+	x = pos % TAILLE_CARTE;
+
+	return x;
+
+}
+
+
+/*
+*   Fonction pour récupérer la coordonnées y dans la carte a partir de la position dans le tableau de la carte
+*/
+int pos2y(int pos)
+{
+	int y = -1;
+
+	y = pos / TAILLE_CARTE;
+
+	return y;
+}
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "map.h"
-
+#include "level.h"
 
 
 
@@ -10,11 +10,18 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     printf("Main debut\n");
 #endif // DEBUG
-
+    int retour = 0;
 
 
     //remplissage du tableau de la carte grâce aux données du tableau niveau
-	
+	retour = loadMapTabFromLevelTab(&mapTab,levelTab,&gameState);
+	if (retour != 0)
+	{
+#ifdef DEBUG
+	    printf("Main -- Retour loadMapTabFromLevelTab KO!\n");
+#endif
+	    return -1;
+	}
 
 	//on dessine la carte une première fois
 
