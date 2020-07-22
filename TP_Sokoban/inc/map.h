@@ -16,6 +16,7 @@ struct Case
     int type; //type de case
     int x; // coord x de la case sur la carte
     int y; // coord y de la case sur la carte
+    SDL_Rect casePos;
     SDL_Surface *caseIMG[2]; // tableau contenant les images possibles de la case
 };
 
@@ -36,6 +37,9 @@ struct GameState
 
 GameState gameState;
 
-int loadMapTabFromLevelTab(Case **mt, int *lt, GameState *gs);
+
+int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs);
+
+int drawMap(Case *mt, GameState *gs, SDL_Surface *bg);
 
 #endif

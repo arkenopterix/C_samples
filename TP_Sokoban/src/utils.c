@@ -30,9 +30,13 @@ int coord2pos(int x, int y)
 int pos2x(int pos)
 {
 	int x = -1;
-
+#ifdef DEBUG
+    printf("|---- utils -- pos2x --DEBUT\n");
+#endif // DEBUG
 	x = pos % TAILLE_CARTE;
-
+#ifdef DEBUG
+    printf("|---- utils -- pos2x --FIN x: %d\n",x);
+#endif // DEBUG
 	return x;
 
 }
@@ -44,9 +48,13 @@ int pos2x(int pos)
 int pos2y(int pos)
 {
 	int y = -1;
-
+#ifdef DEBUG
+    printf("|---- utils -- pos2y --DEBUT\n");
+#endif // DEBUG
 	y = pos / TAILLE_CARTE;
-
+#ifdef DEBUG
+    printf("|---- utils -- pos2y --FIN y: %d\n",y);
+#endif // DEBUG
 	return y;
 }
 

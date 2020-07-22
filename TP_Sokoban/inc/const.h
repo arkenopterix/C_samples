@@ -3,16 +3,16 @@
 
 
 // definitions des etats possibles des cases
-#define EMPTY 1
-#define OBJECTIF 2
-#define CRATE_MOV 3
-#define CRATE_FIX 4
-#define WALL 5
-#define PLAYER_U 6
-#define PLAYER_D 7
-#define PLAYER_L 8
-#define PLAYER_R 9
 
+#define PLAYER_U 0
+#define PLAYER_D 1
+#define PLAYER_L 2
+#define PLAYER_R 3
+#define EMPTY 4
+#define OBJECTIF 5
+#define CRATE_MOV 6
+#define CRATE_FIX 7
+#define WALL 8
 
 
 #endif

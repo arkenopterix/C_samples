@@ -6,13 +6,13 @@ sobo: obj/utils.o obj/main.o obj/map.o
 	${CPP} $(CFLAGS) -o Sobokan obj/utils.o obj/map.o obj/main.o ${LDFLAGS}
 
 obj/map.o: src/map.c
-	${CPP} $(CFLAGS) -o obj/map.o -c src/map.c -I inc/ -I /usr/include/SDL/  ${LDFLAGS}
+	${CPP} $(CFLAGS) -DDEBUG -o obj/map.o -c src/map.c -I inc/ -I /usr/include/SDL/  ${LDFLAGS}
 
 obj/utils.o: src/utils.c
-	${CPP} $(CFLAGS) -o obj/utils.o -c src/utils.c -I inc/ -I /usr/include/SDL/  ${LDFLAGS}
+	${CPP} $(CFLAGS) -DDEBUG -o obj/utils.o -c src/utils.c -I inc/ -I /usr/include/SDL/  ${LDFLAGS}
 
 obj/main.o: src/main.c inc/utils.h inc/map.h
-	${CPP} $(CFLAGS) -o obj/main.o -c src/main.c -I inc/ -I /usr/include/SDL/   ${LDFLAGS}
+	${CPP} $(CFLAGS) -DDEBUG -o obj/main.o -c src/main.c -I inc/ -I /usr/include/SDL/   ${LDFLAGS}
 
 clean:
 	rm -rf obj/utils.o obj/main.o obj/map.o sobo
