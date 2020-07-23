@@ -15,4 +15,4 @@ obj/main.o: src/main.c inc/utils.h inc/map.h
 	${CPP} $(CFLAGS) -DDEBUG -o obj/main.o -c src/main.c -I inc/ -I /usr/include/SDL/   ${LDFLAGS}
 
 clean:
-	rm -rf obj/utils.o obj/main.o obj/map.o sobo
+	rm -rf obj/utils.o obj/main.o obj/map.o Sobokan

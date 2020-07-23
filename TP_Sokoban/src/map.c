@@ -71,10 +71,10 @@ int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs)
 				ret = -1;
 				break;
 		}
-		gs->caseIMG[0] = IMG_Load("res/mario_haut.gif");
-		gs->caseIMG[1] = IMG_Load("res/mario_bas.gif");
-		gs->caseIMG[2] = IMG_Load("res/mario_gauche.gif");
-		gs->caseIMG[3] = IMG_Load("res/mario_droite.gif");
+		gs->playerIMG[0] = IMG_Load("res/mario_haut.gif");
+		gs->playerIMG[1] = IMG_Load("res/mario_bas.gif");
+		gs->playerIMG[2] = IMG_Load("res/mario_gauche.gif");
+		gs->playerIMG[3] = IMG_Load("res/mario_droite.gif");
 
 
 	}
@@ -90,6 +90,7 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg)
 	//on itere sur le tableau de cases pour préparer une à une les images de la carte
 	int ret = 0;
 	int i;
+	SDL_Rect curPlayerPos;
 #ifdef DEBUG
     			printf("drawMap -- START\n");
 #endif // DEBUG
@@ -120,5 +121,93 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg)
 				break;
 		}
 	}
+
+	//on dessine maintenant le joueur au dessus de la carte
+	curPlayerPos.x = pos2x(gs->playerPos)* TAILLE_CASE_PX;
+	curPlayerPos.y = pos2y(gs->playerPos)* TAILLE_CASE_PX;
+#ifdef DEBUG
+    			printf("drawMap -- player pos: x %d ; y %d\n",curPlayerPos.x, curPlayerPos.y);
+#endif	
+	SDL_BlitSurface(gs->playerIMG[gs->playerDir], NULL, bg, &curPlayerPos);
+
+
+
+}
+
+
+
+int freeGameImages(Case *mt,  GameState *gs)
+{
+	int ret = 0;
+	int i;
+#ifdef DEBUG
+    			printf("freeGameImages -- START\n");
+#endif // DEBUG
+	for(i = 0;i < TAILLE_CARTE*TAILLE_CARTE;i++)
+	{
+
+#ifdef DEBUG
+    			printf("freeGameImages -- freeing loaded map images %d\n",i);
+#endif 
+		switch(mt[i].type)
+		{
+			case EMPTY:
+				break;
+			case OBJECTIF:
+				gs->numObj--;
+				if (mt[i].caseIMG[0] != NULL)
+				{
+					SDL_FreeSurface(mt[i].caseIMG[0]);
+				}	
+				break;
+			case CRATE_MOV:
+				if (mt[i].caseIMG[0] != NULL)
+				{
+					SDL_FreeSurface(mt[i].caseIMG[0]);
+				}
+				if (mt[i].caseIMG[1] != NULL)
+				{
+					SDL_FreeSurface(mt[i].caseIMG[1]);
+				}		
+				gs->numCrate--;
+				break;
+			case CRATE_FIX:
+				break;
+			case WALL:
+				if (mt[i].caseIMG[0] != NULL)
+				{
+					SDL_FreeSurface(mt[i].caseIMG[0]);
+				}	
+				gs->numWall--;
+				break;
+			default:
+#ifdef DEBUG
+    			printf("ERROR -- freeGameImages -- unknown square type: %d\n",mt[i].type);
+#endif // DEBUG
+				ret = -1;
+				break;
+		}
+		if (gs->playerIMG[0] != NULL)
+		{
+			SDL_FreeSurface(gs->playerIMG[0]);
+		}	
+		if (gs->playerIMG[1] != NULL)
+		{
+			SDL_FreeSurface(gs->playerIMG[1]);
+		}	
+		if (gs->playerIMG[2] != NULL)
+		{
+			SDL_FreeSurface(gs->playerIMG[2]);
+		}	
+		if (gs->playerIMG[3] != NULL)
+		{
+			SDL_FreeSurface(gs->playerIMG[3]);
+		}		
+
+	}
+#ifdef DEBUG
+    			printf("freeGameImages -- END ret:%d\n",ret);
+#endif // DEBUG
+	return ret;
 
 }

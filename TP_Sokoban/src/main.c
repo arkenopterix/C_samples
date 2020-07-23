@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL/SDL.h>
 #include "map.h"
 #include "level.h"
 
 
+void pause();
 
 int main(int argc, char *argv[])
 {
@@ -35,15 +37,16 @@ int main(int argc, char *argv[])
     drawMap(mapTab,&gameState,fond);
     SDL_Flip(fond); // on met à jour l'affichage
 	// boucle infinie
-	while(gameState.numObj != gameState.objOK) //tant que l'on a pas reussi a mettre les caisse sur tous les objectifs
-	{
+	//while(gameState.numObj != gameState.objOK) //tant que l'on a pas reussi a mettre les caisse sur tous les objectifs
+	//{
 		//on gere les events
 
 
 		//on redessine la carte mise a jour
-	}	
+	//}//	
+	pause();
 	
-	
+	retour = freeGameImages(mapTab,&gameState);
 
     //SDL_FreeSurface(bkgrnd);// libération de la surface (pas besoin de le faire pour l'écran, qui est géré en dessous dans SDL_Quit)
 	SDL_Quit();// Arret de la SDL
@@ -51,6 +54,24 @@ int main(int argc, char *argv[])
 
     return 0;
 
+}
+
+
+
+void pause()
+{
+    int continuer = 1;
+    SDL_Event event;
+
+    while (continuer)
+    {
+        SDL_WaitEvent( &event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer = 0;
+        }
+    }
 }
 //gcc -Wall -c "chap13_strings.c"
 //gcc -Wall -o "chap13_strings" "chap13_strings.c"

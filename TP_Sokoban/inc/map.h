@@ -32,7 +32,7 @@ struct GameState
     int objOK; //nombre d'objectifs accomplis
     int playerPos; // position du joueur sur le tableau
     int playerDir; // direction du joueur
-    SDL_Surface *caseIMG[4]; // tableau contenant les images des differentes directions du joueur
+    SDL_Surface *playerIMG[4]; // tableau contenant les images des differentes directions du joueur
 };
 
 GameState gameState;
@@ -41,5 +41,7 @@ GameState gameState;
 int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs);
 
 int drawMap(Case *mt, GameState *gs, SDL_Surface *bg);
+
+int freeGameImages(Case *mt,  GameState *gs);
 
 #endif
