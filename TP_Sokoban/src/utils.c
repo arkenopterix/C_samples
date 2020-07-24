@@ -58,3 +58,79 @@ int pos2y(int pos)
 	return y;
 }
 
+/*
+*   Fonction pour récupérer la nouvelle position lors d'un déplacement 2D dans le tableau à partir d'un postition donnée
+*/
+int newPosFromMove(int pos, int direction)
+{
+	int newPos = -1;
+	int x=0,y=0;
+#ifdef DEBUG
+    printf("|---- utils -- newPosFromMove --DEBUT pos : %d direction : %d\n",pos,direction);
+#endif // DEBUG
+	switch(direction)
+	{
+    	case PLAYER_U:
+    		x = pos2x(pos);
+    		y = pos2y(pos);
+    		y--;
+    		if(y < 0)
+    		{
+#ifdef DEBUG
+    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+#endif // DEBUG
+    			return pos;
+    		}
+    		newPos = coord2pos(x,y);
+			break;
+		case PLAYER_D:
+			x = pos2x(pos);
+    		y = pos2y(pos);
+    		y++;
+    		if(y >= TAILLE_CARTE)
+    		{
+#ifdef DEBUG
+    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+#endif // DEBUG
+    			return pos;
+    		}
+    		newPos = coord2pos(x,y);
+			break;
+		case PLAYER_L:
+			x = pos2x(pos);
+    		y = pos2y(pos);
+    		x--;
+    		if(x < 0)
+    		{
+#ifdef DEBUG
+    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+#endif // DEBUG
+    			return pos;
+    		}
+    		newPos = coord2pos(x,y);
+			break;
+		case PLAYER_R:
+			x = pos2x(pos);
+    		y = pos2y(pos);
+    		x++;
+    		if(x >= TAILLE_CARTE)
+    		{
+#ifdef DEBUG
+    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+#endif // DEBUG
+    			return pos;
+    		}
+    		newPos = coord2pos(x,y);
+			break;
+		default:
+#ifdef DEBUG
+    		printf("ERROR -- newPosFromMove -- unknown dir! : %d\n",direction);
+#endif // DEBUG		
+			break;
+
+		}
+#ifdef DEBUG
+    printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+#endif // DEBUG
+	return newPos;
+}

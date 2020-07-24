@@ -44,4 +44,6 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg);
 
 int freeGameImages(Case *mt,  GameState *gs);
 
+int movePlayer(Case *mt,  GameState *gs, int direction);
+
 #endif

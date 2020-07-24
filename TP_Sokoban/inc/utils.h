@@ -7,5 +7,6 @@ int pos2x(int pos);
 
 int pos2y(int pos);
 
+int newPosFromMove(int pos, int direction);
 
 #endif

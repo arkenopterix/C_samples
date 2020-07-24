@@ -211,3 +211,61 @@ int freeGameImages(Case *mt,  GameState *gs)
 	return ret;
 
 }
+
+
+
+int movePlayer(Case *mt,  GameState *gs, int direction)
+{
+	int ret = 0;
+	int newpos;
+#ifdef DEBUG
+    printf("movePlayer -- START\n");
+#endif // DEBUG
+    switch(direction)
+	{
+    	case PLAYER_U:
+#ifdef DEBUG
+    		printf("movePlayer -- moving player UP\n");
+#endif // DEBUG
+    		// on calcul la future position du joueur
+			newpos = newPosFromMove(gs->playerPos,direction);
+			break;
+		case PLAYER_D:
+#ifdef DEBUG
+    		printf("movePlayer -- moving player DOWN\n");
+#endif // DEBUG
+    		// on calcul la future position du joueur
+			newpos = newPosFromMove(gs->playerPos,direction);
+			break;
+		case PLAYER_L:
+#ifdef DEBUG
+    		printf("movePlayer -- moving player LEFT\n");
+#endif // DEBUG
+    		// on calcul la future position du joueur
+			newpos = newPosFromMove(gs->playerPos,direction);
+			break;
+		case PLAYER_R:
+#ifdef DEBUG
+    		printf("movePlayer -- moving player RIGHT\n");
+#endif // DEBUG
+   		    // on calcul la future position du joueur
+			newpos = newPosFromMove(gs->playerPos,direction);
+			break;
+		default:
+#ifdef DEBUG
+    		printf("ERROR -- movePlayer -- unknown dir! : %d\n",direction);
+#endif // DEBUG		
+			break;
+		}
+		// si le mouvement est dans les limitesde la carte
+		if(newpos != -1)
+		{
+			// on teste la collision de la future position avec un mur
+			gs->playerPos = newpos;
+		}
+
+#ifdef DEBUG
+    printf("movePlayer -- END ret:%d\n",ret);
+#endif // DEBUG
+	return ret;
+}
