@@ -261,7 +261,11 @@ int movePlayer(Case *mt,  GameState *gs, int direction)
 		if(newpos != -1)
 		{
 			// on teste la collision de la future position avec un mur
-			gs->playerPos = newpos;
+			if (mt[newpos].type != WALL)
+			{
+				gs->playerPos = newpos;
+
+			}
 		}
 
 #ifdef DEBUG
