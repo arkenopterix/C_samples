@@ -46,4 +46,7 @@ int freeGameImages(Case *mt,  GameState *gs);
 
 int movePlayer(Case *mt,  GameState *gs, int direction);
 
+int moveCrate(Case *mt,GameState *gs, int newPlayerPos, int direction);
+
+
 #endif

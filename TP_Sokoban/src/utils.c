@@ -49,11 +49,11 @@ int pos2y(int pos)
 {
 	int y = -1;
 #ifdef DEBUG
-    printf("|---- utils -- pos2y --DEBUT\n");
+    printf("	|---- utils -- pos2y --DEBUT\n");
 #endif // DEBUG
 	y = pos / TAILLE_CARTE;
 #ifdef DEBUG
-    printf("|---- utils -- pos2y --FIN y: %d\n",y);
+    printf("	|---- utils -- pos2y --FIN y: %d\n",y);
 #endif // DEBUG
 	return y;
 }
@@ -66,7 +66,7 @@ int newPosFromMove(int pos, int direction)
 	int newPos = -1;
 	int x=0,y=0;
 #ifdef DEBUG
-    printf("|---- utils -- newPosFromMove --DEBUT pos : %d direction : %d\n",pos,direction);
+    printf("	|---- utils -- newPosFromMove --DEBUT pos : %d direction : %d\n",pos,direction);
 #endif // DEBUG
 	switch(direction)
 	{
@@ -77,7 +77,7 @@ int newPosFromMove(int pos, int direction)
     		if(y < 0)
     		{
 #ifdef DEBUG
-    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+    			printf("	|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
 #endif // DEBUG
     			return pos;
     		}
@@ -90,7 +90,7 @@ int newPosFromMove(int pos, int direction)
     		if(y >= TAILLE_CARTE)
     		{
 #ifdef DEBUG
-    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+    			printf("	|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
 #endif // DEBUG
     			return pos;
     		}
@@ -103,7 +103,7 @@ int newPosFromMove(int pos, int direction)
     		if(x < 0)
     		{
 #ifdef DEBUG
-    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+    			printf("	|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
 #endif // DEBUG
     			return pos;
     		}
@@ -116,7 +116,7 @@ int newPosFromMove(int pos, int direction)
     		if(x >= TAILLE_CARTE)
     		{
 #ifdef DEBUG
-    			printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+    			printf(	"	|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
 #endif // DEBUG
     			return pos;
     		}
@@ -130,7 +130,7 @@ int newPosFromMove(int pos, int direction)
 
 		}
 #ifdef DEBUG
-    printf("|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
+    printf("	|---- utils -- newPosFromMove --FIN newPos: %d\n",y);
 #endif // DEBUG
 	return newPos;
 }

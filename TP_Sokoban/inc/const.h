@@ -14,5 +14,7 @@
 #define CRATE_FIX 7
 #define WALL 8
 
+#define MOVE_IMPOSSIBLE -2
+#define MOVE_OK 0
 
 #endif

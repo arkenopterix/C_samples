@@ -136,5 +136,4 @@ void pause()
         }
     }
 }
-//gcc -Wall -c "chap13_strings.c"
-//gcc -Wall -o "chap13_strings" "chap13_strings.c"
+
