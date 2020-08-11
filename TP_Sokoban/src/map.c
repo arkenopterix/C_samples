@@ -31,17 +31,13 @@ int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs)
 				break;
 			case OBJECTIF:
 				gs->numObj++;
-				mt[i].caseIMG[0] = IMG_Load("res/objectif.png");
 				break;
 			case CRATE_MOV:
-				mt[i].caseIMG[0] = IMG_Load("res/caisse.jpg");
-				mt[i].caseIMG[1] = IMG_Load("res/caisse_ok.jpg");
 				gs->numCrate++;
 				break;
 			case CRATE_FIX:
 				break;
 			case WALL:
-				mt[i].caseIMG[0] = IMG_Load("res/mur.jpg");
 				gs->numWall++;
 				break;
 			case PLAYER_U:
@@ -71,10 +67,14 @@ int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs)
 				ret = -1;
 				break;
 		}
-		gs->playerIMG[0] = IMG_Load("res/mario_haut.gif");
-		gs->playerIMG[1] = IMG_Load("res/mario_bas.gif");
-		gs->playerIMG[2] = IMG_Load("res/mario_gauche.gif");
-		gs->playerIMG[3] = IMG_Load("res/mario_droite.gif");
+		gs->mapIMG[PLAYER_U] = IMG_Load("res/aboni_haut.png");
+		gs->mapIMG[PLAYER_D] = IMG_Load("res/aboni_bas.png");
+		gs->mapIMG[PLAYER_L] = IMG_Load("res/aboni_gauche.png");
+		gs->mapIMG[PLAYER_R] = IMG_Load("res/aboni_droite.png");
+		gs->mapIMG[WALL] = IMG_Load("res/mur.jpg");
+		gs->mapIMG[OBJECTIF] = IMG_Load("res/objectif.png");
+		gs->mapIMG[CRATE_MOV] = IMG_Load("res/caisse.jpg");
+		gs->mapIMG[CRATE_FIX] = IMG_Load("res/caisse_ok.jpg");
 
 
 	}
@@ -90,7 +90,7 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg)
 	//on itere sur le tableau de cases pour préparer une à une les images de la carte
 	int ret = 0;
 	int i;
-	SDL_Rect curPlayerPos;
+	SDL_Rect curPlayerPos, tilePose;
 #ifdef DEBUG
     			printf("drawMap -- START\n");
 #endif // DEBUG
@@ -107,25 +107,26 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg)
 #ifdef DEBUG
     			printf("drawMap -- case[%d]=OBJECTIF\n",i);
 #endif 
-				SDL_BlitSurface(mt[i].caseIMG[0], NULL, bg, &mt[i].casePos);
+
+				SDL_BlitSurface(gs->mapIMG[OBJECTIF], NULL, bg, &mt[i].casePos);
 				break;
 			case CRATE_MOV:
 #ifdef DEBUG
     			printf("drawMap -- case[%d]=CRATE_MOV\n",i);
 #endif 
-				SDL_BlitSurface(mt[i].caseIMG[0], NULL, bg, &mt[i].casePos);
+				SDL_BlitSurface(gs->mapIMG[CRATE_MOV], NULL, bg, &mt[i].casePos);
 				break;
 			case CRATE_FIX:
 #ifdef DEBUG
     			printf("drawMap -- case[%d]=CRATE_FIX\n",i);
 #endif 
-				SDL_BlitSurface(mt[i].caseIMG[1], NULL, bg, &mt[i].casePos);
+				SDL_BlitSurface(gs->mapIMG[CRATE_FIX], NULL, bg, &mt[i].casePos);
 				break;
 			case WALL:
 #ifdef DEBUG
     			printf("drawMap -- case[%d]=WALL\n",i);
 #endif 
-				SDL_BlitSurface(mt[i].caseIMG[0], NULL, bg, &mt[i].casePos);				
+				SDL_BlitSurface(gs->mapIMG[WALL], NULL, bg, &mt[i].casePos);				
 				break;
 			default:
 #ifdef DEBUG
@@ -142,7 +143,7 @@ int drawMap(Case *mt, GameState *gs, SDL_Surface *bg)
 #ifdef DEBUG
     			printf("drawMap -- player pos: x %d ; y %d\n",curPlayerPos.x, curPlayerPos.y);
 #endif	
-	SDL_BlitSurface(gs->playerIMG[gs->playerDir], NULL, bg, &curPlayerPos);
+	SDL_BlitSurface(gs->mapIMG[gs->playerDir], NULL, bg, &curPlayerPos);
 
 
 
@@ -157,66 +158,14 @@ int freeGameImages(Case *mt,  GameState *gs)
 #ifdef DEBUG
     			printf("freeGameImages -- START\n");
 #endif // DEBUG
-	for(i = 0;i < TAILLE_CARTE*TAILLE_CARTE;i++)
+	for(i = 0;i < 8;i++)
 	{
 
 #ifdef DEBUG
     			printf("freeGameImages -- freeing loaded map images %d\n",i);
 #endif 
-		switch(mt[i].type)
-		{
-			case EMPTY:
-				break;
-			case OBJECTIF:
-				gs->numObj--;
-				if (mt[i].caseIMG[0] != NULL)
-				{
-					SDL_FreeSurface(mt[i].caseIMG[0]);
-				}	
-				break;
-			case CRATE_MOV:
-				if (mt[i].caseIMG[0] != NULL)
-				{
-					SDL_FreeSurface(mt[i].caseIMG[0]);
-				}
-				if (mt[i].caseIMG[1] != NULL)
-				{
-					SDL_FreeSurface(mt[i].caseIMG[1]);
-				}		
-				gs->numCrate--;
-				break;
-			case CRATE_FIX:
-				break;
-			case WALL:
-				if (mt[i].caseIMG[0] != NULL)
-				{
-					SDL_FreeSurface(mt[i].caseIMG[0]);
-				}	
-				gs->numWall--;
-				break;
-			default:
-#ifdef DEBUG
-    			printf("ERROR -- freeGameImages -- unknown square type: %d\n",mt[i].type);
-#endif // DEBUG
-				ret = -1;
-				break;
-		}
-		if (gs->playerIMG[0] != NULL)
-		{
-			SDL_FreeSurface(gs->playerIMG[0]);
-		}	
-		if (gs->playerIMG[1] != NULL)
-		{
-			SDL_FreeSurface(gs->playerIMG[1]);
-		}	
-		if (gs->playerIMG[2] != NULL)
-		{
-			SDL_FreeSurface(gs->playerIMG[2]);
-		}	
-		if (gs->playerIMG[3] != NULL)
-		{
-			SDL_FreeSurface(gs->playerIMG[3]);
-		}		
+		SDL_FreeSurface(gs->mapIMG[i]);
+		
 
 	}
 #ifdef DEBUG
@@ -373,11 +322,7 @@ int moveCrate(Case *mt, GameState *gs, int newPlayerPos, int direction)
 				mt[newPlayerPos].type = EMPTY;
 				mt[newpos].type = CRATE_MOV;
 
-				// on procède à l'échange des pointeurs SDL
-				mt[newpos].caseIMG[0] = mt[newPlayerPos].caseIMG[0];
-				mt[newpos].caseIMG[1] = mt[newPlayerPos].caseIMG[1];
-				mt[newPlayerPos].caseIMG[0] = NULL;
-				mt[newPlayerPos].caseIMG[1] = NULL;
+	
 
 
 #ifdef DEBUG
@@ -389,12 +334,6 @@ int moveCrate(Case *mt, GameState *gs, int newPlayerPos, int direction)
 				// On déplace la caisse sur un objectif! on met à jour la carte
 				mt[newPlayerPos].type = EMPTY;
 				mt[newpos].type = CRATE_FIX;
-
-				// on procède à l'échange des pointeurs SDL
-				mt[newpos].caseIMG[0] = mt[newPlayerPos].caseIMG[0];
-				mt[newpos].caseIMG[1] = mt[newPlayerPos].caseIMG[1];
-				mt[newPlayerPos].caseIMG[0] = NULL;
-				mt[newPlayerPos].caseIMG[1] = NULL;
 
 				//on met à jour le statut du jeu
 				gs->objOK++;

@@ -17,7 +17,6 @@ struct Case
     int x; // coord x de la case sur la carte
     int y; // coord y de la case sur la carte
     SDL_Rect casePos;
-    SDL_Surface *caseIMG[2]; // tableau contenant les images possibles de la case
 };
 
 Case mapTab[TAILLE_CARTE*TAILLE_CARTE];
@@ -32,10 +31,11 @@ struct GameState
     int objOK; //nombre d'objectifs accomplis
     int playerPos; // position du joueur sur le tableau
     int playerDir; // direction du joueur
-    SDL_Surface *playerIMG[4]; // tableau contenant les images des differentes directions du joueur
+    SDL_Surface *mapIMG[8]; // tableau contenant les images des differentes tiles du jeu
 };
 
 GameState gameState;
+
 
 
 int loadMapTabFromLevelTab(Case *mt, int *lt, GameState *gs);
